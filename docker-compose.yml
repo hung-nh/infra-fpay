@@ -9,8 +9,11 @@ services:
       - ./rabbit-data:/var/lib/rabbitmq
     ports:
       - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+      - ${RABBITMQ_WEB_UI_PORT}:${RABBITMQ_WEB_UI_PORT}
     environment:
       - BROKER_POOL_LIMIT=0
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_PASS}
   cache-redis:
     container_name: beam_redis
     image: redis:alpine
@@ -20,7 +23,7 @@ services:
       - ./redis-data:/data
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
-    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    command: "/bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
   smtp4dev:
     image: rnwood/smtp4dev
     container_name: beam_smtp4dev
