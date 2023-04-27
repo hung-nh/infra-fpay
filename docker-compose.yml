@@ -7,13 +7,14 @@ services:
     hostname: rabbitmq
     volumes:
       - ./rabbit-data:/var/lib/rabbitmq
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config
     ports:
       - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
       - ${RABBITMQ_WEB_UI_PORT}:${RABBITMQ_WEB_UI_PORT}
     environment:
-      - BROKER_POOL_LIMIT: 0
-      - RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_PASS}
+      - BROKER_POOL_LIMIT=0
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
   cache-redis:
     container_name: beam_redis
     image: redis:alpine
