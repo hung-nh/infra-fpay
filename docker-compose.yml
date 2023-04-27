@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: beam_rbmq
+    hostname: rabbitmq
+    volumes:
+      - ./rabbit-data:/var/lib/rabbitmq
+    ports:
+      - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+    environment:
+      - BROKER_POOL_LIMIT=0
+  cache-redis:
+    container_name: beam_redis
+    image: redis:alpine
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis-data:/data
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+  smtp4dev:
+    image: rnwood/smtp4dev
+    container_name: beam_smtp4dev
+    ports:
+      - ${SMTP_EMAIL_DEV_UI_PORT}:80
+      - ${SMTP_EMAIL_SENDER_PORT}:25
