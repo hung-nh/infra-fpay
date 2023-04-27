@@ -13,7 +13,7 @@ services:
     environment:
       - BROKER_POOL_LIMIT: 0
       - RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_USER: {RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_PASS}
   cache-redis:
     container_name: beam_redis
     image: redis:alpine
